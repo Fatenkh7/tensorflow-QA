@@ -63,7 +63,7 @@
         for a treatment, and the success of the vaccines.</div>
     <div style='text-align: center; padding: 10px;'>
         <input type='text' id='question' placeholder='Ask a question'></input>
-        <button type='submit' id='submit' value='Submit'>sub</button>
+        <button type='submit' id='submit' value='Submit'>submit</button>
     </div>
     <div id='result' class='one-edge-shadow'
         style="color: #FF00FF;margin:10px;background-color: #DAF7A6;text-align:center"></div>
@@ -75,24 +75,23 @@
         let model;
 
         const predict = async () => {
-            model = await qna.load();
-
-            document.getElementById('submit')
-                .addEventListener('click', (e) => {
-                    const passage = document.getElementById('passage').innerHTML;
-                    const question = document.getElementById('question').value;
-                    model.findAnswers(question, passage).then(answers => {
-                        console.log('Answers: ', answers);
-                        document.getElementById('result').innerHTML = answers[0].text;
-                    }).catch(error => {
+            console.log("clicked 1");
+            const model = await qna.load();
+            document.getElementById('submit').addEventListener('click', (e) => {
+                console.log("clicked");
+                const passage = document.getElementById('passage').innerHTML;
+                const question = document.getElementById('question').value;
+                model.findAnswers(question, passage)
+                    .then(answers => {
+                        const result = document.getElementById('result');
+                        result.innerHTML = answers[0].text;
+                    })
+                    .catch(error => {
                         console.error('Error finding answers: ', error);
                     });
-
-                    // Prevent submitting the form which would cause a page reload.
-                    e.preventDefault();
-                });
+                e.preventDefault();
+            });
         };
-
 
         predict();
     </script>
